@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 from PyQt5.QtGui import QPainter, QColor, QImage
 from random import randint
 
@@ -8,14 +8,16 @@ from random import randint
 class FirstForm(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('UI.ui', self)
+        self.setFixedSize(800, 800)
         self._im = QImage(self.width(), self.height(), QImage.Format_ARGB32)
         self._im.fill(QColor("white"))
 
-        self.go = False
-        self.pushButton.clicked.connect(self.draw_circle)
+        self.pushButton = QPushButton('Нажми', self)
+        self.pushButton.resize(100, 50)
+        self.pushButton.move(350, 350)
+        self.pushButton.setStyleSheet('color: rgb(255, 255, 0); background-color: rgb(0, 0, 0);')
 
-        self.setFixedSize(800, 800)
+        self.pushButton.clicked.connect(self.draw_circle)
 
     def paintEvent(self, event):
         qp = QPainter()
@@ -31,7 +33,8 @@ class FirstForm(QMainWindow):
 
         qp.setBrush(QColor(0, 0, 0))
         qp.drawEllipse(x - 1, y - 1, a + 2, a + 2)
-        qp.setBrush(QColor(255, 255, 0))
+        r, g, b = randint(0, 256), randint(0, 256), randint(0, 256)
+        qp.setBrush(QColor(r, g, b))
         qp.drawEllipse(x, y, a, a)
 
         self.update()
